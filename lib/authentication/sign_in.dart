@@ -6,6 +6,7 @@ import 'package:starthub_mobile_pjt/screen/home.dart';
 import 'package:starthub_mobile_pjt/service/authentication.dart';
 import 'package:starthub_mobile_pjt/service/dialog_service.dart';
 import 'package:starthub_mobile_pjt/service/navigation_service.dart';
+import 'package:starthub_mobile_pjt/widget/loading.dart';
 
 import '../constants.dart';
 import '../presets.dart';
@@ -71,7 +72,6 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.white,
@@ -110,17 +110,23 @@ class _SignInState extends State<SignIn> {
                           print("Email Address: ${emailController.text}" +
                               ' | ' +
                               "Password: ${passwordController.text}");
-                         dynamic result = await provider.login(
+                          dynamic result = await provider.login(
                             emailController.text.trim(),
                             passwordController.text.trim(),
                           );
-                          if(result == null) {
-                          return _dialogService.showDialog(
-                              title: "SignIn Failure",
-                              description:
-                                  'General SignIn failure. Please try again later');
+                          if (result == null) {
+                            return _dialogService.showDialog(
+                                title: "SignIn Failure",
+                                description:
+                                    'General SignIn failure. Please try again later');
+                          } else {
+                            LoadingWidget();
+                            return Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home()));
+                          }
                         }
-                        } 
                       }),
                       SizedBox(height: 15),
                       Row(

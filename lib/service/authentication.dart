@@ -105,7 +105,7 @@ class AuthService {
       UserCredential authResult = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       await FirestoreService(uid: authResult.user.uid)
-          .createUser(fName:firstname, lName:lastname, email:email, password:password);
+          .createUser(fName:firstname, lName:lastname, email:email, password:password,bio: '',imageUrl: '',link: '');
       User user = authResult.user;
       return user != null;
     } on SocketException {

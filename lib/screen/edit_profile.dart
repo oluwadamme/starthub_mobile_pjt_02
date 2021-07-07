@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:starthub_mobile_pjt/models/userModel.dart';
 import 'package:starthub_mobile_pjt/screen/profile.dart';
 import 'package:starthub_mobile_pjt/service/firestore_service.dart';
+import 'package:starthub_mobile_pjt/widget/loading.dart';
 import '../constants.dart';
 
 class EditProfile extends StatefulWidget {
@@ -206,6 +207,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           child: TextFormField(
                             initialValue: userModel.fName,
+                            keyboardType: TextInputType.name,
                             validator: (value) =>
                                 value.isNotEmpty ? null : "Cannot be empty",
                             onChanged: (value) =>
@@ -232,6 +234,7 @@ class _EditProfileState extends State<EditProfile> {
                             borderRadius: BorderRadius.circular(7),
                           ),
                           child: TextFormField(
+                            keyboardType: TextInputType.name,
                             initialValue: userModel.lName,
                             validator: (value) =>
                                 value.isNotEmpty ? null : "Cannot be empty",
@@ -260,6 +263,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           child: TextFormField(
                             initialValue: userModel.bio,
+                            keyboardType: TextInputType.text,
                             validator: (value) =>
                                 value.isNotEmpty ? null : "Cannot be empty",
                             onChanged: (value) =>
@@ -287,6 +291,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           child: TextFormField(
                             initialValue: userModel.link,
+                            keyboardType: TextInputType.name,
                             validator: (value) =>
                                 value.isNotEmpty ? null : "Cannot be empty",
                             onChanged: (value) =>
@@ -306,45 +311,44 @@ class _EditProfileState extends State<EditProfile> {
                             textColor: Colors.white,
                             press: () async {
                               if (_formkey.currentState.validate()) {
-                                
-                                  print("updating profile");
+                                print("updating profile");
 
-                                  dynamic result = await FirestoreService(
-                                          uid: user.uid)
-                                      .createUser(
-                                          fName: fnameController ??
-                                              userModel.fName,
-                                          lName: lnameController ??
-                                              userModel.lName,
-                                          bio: bioController ?? userModel.bio,
-                                          imageUrl:
-                                              _image.path ?? userModel.imageUrl,
-                                          link: 'https://github.com/' +
-                                                  websiteController ??
-                                              userModel.link,
-                                              email: userModel.emailAdd,
-                                              password: userModel.password);
-                                  print('result: $result');
-                                  if (result == null) {
-                                    return Container(
-                                      color: Colors.amber,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: ListTile(
-                                        title: Text("fill the empty boxes"),
-                                        leading: Icon(Icons.error),
-                                        trailing: IconButton(
-                                            onPressed: () {
-                                              // Authenticate();
-                                            },
-                                            icon: Icon(Icons.close)),
-                                      ),
-                                    );
-                                  } else {
-                                    Navigator.pop(context);
-                                  }
+                                dynamic result = await FirestoreService(
+                                        uid: user.uid)
+                                    .createUser(
+                                        fName:
+                                            fnameController ?? userModel.fName,
+                                        lName:
+                                            lnameController ?? userModel.lName,
+                                        bio: bioController ?? userModel.bio,
+                                        imageUrl:
+                                            _image.path ?? userModel.imageUrl,
+                                        link: 'https://github.com/' +
+                                                websiteController ??
+                                            userModel.link,
+                                        email: userModel.emailAdd,
+                                        password: userModel.password);
+                                print('result: $result');
+                                if (result == null) {
+                                  return Container(
+                                    color: Colors.amber,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child: ListTile(
+                                      title: Text("fill the empty boxes"),
+                                      leading: Icon(Icons.error),
+                                      trailing: IconButton(
+                                          onPressed: () {
+                                            // Authenticate();
+                                          },
+                                          icon: Icon(Icons.close)),
+                                    ),
+                                  );
+                                } else {
+                                  LoadingWidget();
+                                  Navigator.pop(context);
                                 }
-                              
+                              }
                             }),
                       ],
                     ),

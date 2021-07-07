@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:starthub_mobile_pjt/screen/home.dart';
 import 'package:starthub_mobile_pjt/service/authentication.dart';
 import 'package:starthub_mobile_pjt/service/dialog_service.dart';
 import 'package:starthub_mobile_pjt/service/navigation_service.dart';
+import 'package:starthub_mobile_pjt/widget/loading.dart';
 
 import '../constants.dart';
 import '../locator.dart';
@@ -76,7 +78,8 @@ class _RegisterState extends State<Register> {
         keyboardType: TextInputType.text,
         controller: passwordController,
         obscureText: _passwordVisible,
-        validator: (value) => value.length < 6 ? "Cannot be less than 6 chars" : null,
+        validator: (value) =>
+            value.length < 6 ? "Cannot be less than 6 chars" : null,
         decoration: InputDecoration(
             hintText: 'Password',
             hintStyle: kHintTextStyle,
@@ -95,7 +98,8 @@ class _RegisterState extends State<Register> {
         keyboardType: TextInputType.text,
         controller: _confirmUserPasswordController,
         obscureText: _passwordVisible,
-        validator: (value) => value.length < 6 ? "Cannot be less than 6 chars" : null,
+        validator: (value) =>
+            value.length < 6 ? "Cannot be less than 6 chars" : null,
         decoration: InputDecoration(
             hintText: 'Confirm password',
             hintStyle: kHintTextStyle,
@@ -118,7 +122,6 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.white,
@@ -185,6 +188,12 @@ class _RegisterState extends State<Register> {
                                   title: "Register Failure",
                                   description:
                                       'General Register failure. Please try again later');
+                            } else {
+                              LoadingWidget();
+                              return Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home()));
                             }
                           }
                         }),

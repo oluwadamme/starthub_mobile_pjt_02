@@ -61,6 +61,7 @@ class NewTextField extends StatelessWidget {
         child: Center(
             child: TextFormField(
                 controller: controller,
+                keyboardType: TextInputType.text,
                 validator: (value) => value.isNotEmpty ? null : "Cannot be empty",
                 decoration: InputDecoration(
                     hintText: hintText,
